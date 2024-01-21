@@ -1,0 +1,142 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+    <actions/>
+    <description>My first job</description>
+    <keepDependencies>false</keepDependencies>
+    <properties/>
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@5.2.1">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+            <hudson.plugins.git.UserRemoteConfig>
+                <url>git@github.com:SoldatovAlexandr/GitTraining.git</url>
+                <credentialsId>jenkins_GIT_plugin_gitHubSource</credentialsId>
+            </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+            <hudson.plugins.git.BranchSpec>
+                <name>*/master</name>
+            </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="empty-list"/>
+        <extensions/>
+    </scm>
+    <canRoam>true</canRoam>
+    <disabled>false</disabled>
+    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+    <triggers/>
+    <concurrentBuild>false</concurrentBuild>
+    <builders>
+        <hudson.tasks.Shell>
+            <command>echo &quot;----------Prom Env Build Start----------&quot;
+                echo &quot;This is the new line in my index.html - file&quot; &gt;&gt; index.html
+                echo &quot;----------Prom Env Build End----------&quot;
+            </command>
+            <configuredLocalRules/>
+        </hudson.tasks.Shell>
+        <hudson.tasks.Shell>
+            <command>echo &quot;----------Prom Env Test Start----------&quot;
+                tempResult=`grep &quot;This page is from GitHub repo&quot; index.html | grep &quot;Arial&quot; | wc -l`
+                echo $tempResult
+                if [ &quot;$tempResult&quot; = &quot;1&quot; ]
+                then
+                echo &quot;Test Successfully Passed&quot;
+                # exit 0
+                else
+                echo &quot;Test Failed&quot;
+                exit 1
+                fi
+                echo &quot;----------Prom Env Test End----------&quot;
+            </command>
+            <configuredLocalRules/>
+        </hudson.tasks.Shell>
+    </builders>
+    <publishers>
+        <jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin plugin="publish-over-ssh@1.25">
+            <consolePrefix>SSH:</consolePrefix>
+            <delegate plugin="publish-over@0.22">
+                <publishers>
+                    <jenkins.plugins.publish__over__ssh.BapSshPublisher plugin="publish-over-ssh@1.25">
+                        <configName>apps</configName>
+                        <verbose>false</verbose>
+                        <transfers>
+                            <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                                <remoteDirectory></remoteDirectory>
+                                <sourceFiles>*</sourceFiles>
+                                <excludes></excludes>
+                                <removePrefix></removePrefix>
+                                <remoteDirectorySDF>false</remoteDirectorySDF>
+                                <flatten>false</flatten>
+                                <cleanRemote>false</cleanRemote>
+                                <noDefaultExcludes>false</noDefaultExcludes>
+                                <makeEmptyDirs>false</makeEmptyDirs>
+                                <patternSeparator>[, ]+</patternSeparator>
+                                <execCommand>sudo service nginx restart</execCommand>
+                                <execTimeout>120000</execTimeout>
+                                <usePty>false</usePty>
+                                <useAgentForwarding>false</useAgentForwarding>
+                                <useSftpForExec>false</useSftpForExec>
+                                <keepFilePermissions>false</keepFilePermissions>
+                            </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                        </transfers>
+                        <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+                        <usePromotionTimestamp>false</usePromotionTimestamp>
+                        <credentials class="jenkins.plugins.publish_over_ssh.BapSshCredentials">
+                            <secretPassphrase>{AQAAABAAAAAQhhs+a+1fW/Vb71i0GQ2Ck1IRGq35+itXHs792P20yfU=}
+                            </secretPassphrase>
+                            <key>-----BEGIN OPENSSH PRIVATE KEY-----
+                                b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
+                                NhAAAAAwEAAQAAAYEAs+TnTX08DVl5ygv52MLUpa+0P35q6zgICIs+Rh9+3znH4A//ckey
+                                mZzRv4byxZqyxvq+2TDPdzltlf9bVUW0l0rihpQG+zRdgqcCMtXaPEKFhFBw8Wv535Z4Ls
+                                KLq8PlLN9NUrO1j5RL0F8z/RZSJKK3PiBVzC5Ynt+oWaWSdSawGGFvcAeCp2ttQ6oUGRtS
+                                EnkvJzb4HRn4P7buVFMLcr5WKnp5D36wBK1nU8rcfbfTAsXqinOM7OWTF2Y/InciVXP6Lq
+                                QlsNQW/zz409ZyTs9rHCNMRAESX+Z8DVxzfl9SFZrpBwHdeHV91GaTlm2RRCZPcB/xSP5U
+                                /tHbKbLxQ+TiB/aKqAU/TYfTtXgqXEBc/nEnALD3O0X6fRBhBPQZPi2Kx9UbIG6thgVIo3
+                                DiAuN2krkMD8GzicKY4Bcc7eBzdrX72hXqLOI83j34oK/9B6rtj3i7Ca/mU8klJUyfq+jW
+                                bhOWyCCNb/Oq09kIfOXhw5ctr3anPLQZjHevpBdBAAAFqLdhJ7O3YSezAAAAB3NzaC1yc2
+                                EAAAGBALPk5019PA1ZecoL+djC1KWvtD9+aus4CAiLPkYfft85x+AP/3JHspmc0b+G8sWa
+                                ssb6vtkwz3c5bZX/W1VFtJdK4oaUBvs0XYKnAjLV2jxChYRQcPFr+d+WeC7Ci6vD5SzfTV
+                                KztY+US9BfM/0WUiSitz4gVcwuWJ7fqFmlknUmsBhhb3AHgqdrbUOqFBkbUhJ5Lyc2+B0Z
+                                +D+27lRTC3K+Vip6eQ9+sAStZ1PK3H230wLF6opzjOzlkxdmPyJ3IlVz+i6kJbDUFv88+N
+                                PWck7PaxwjTEQBEl/mfA1cc35fUhWa6QcB3Xh1fdRmk5ZtkUQmT3Af8Uj+VP7R2ymy8UPk
+                                4gf2iqgFP02H07V4KlxAXP5xJwCw9ztF+n0QYQT0GT4tisfVGyBurYYFSKNw4gLjdpK5DA
+                                /Bs4nCmOAXHO3gc3a1+9oV6iziPN49+KCv/Qeq7Y94uwmv5lPJJSVMn6vo1m4TlsggjW/z
+                                qtPZCHzl4cOXLa92pzy0GYx3r6QXQQAAAAMBAAEAAAGAe4sojr8DDuf0DB5NZ9/lyiPw1e
+                                or436Hhdaa3e2jZAp6ihZyiDlVHsnkAnTbJXoobR6nEuHCmU6HRAwq3VURwRVcnK/sW3iK
+                                /79SczcKuXe12jikWCifYj4kK3jQExZlvXtdzv48Im7l4iR/v8AkiaR10+TBB4iMtA9Fvs
+                                tG2c3IAfZoYbfGstPEJkQXqWZp5uXyzCukGdhL9PXcl2yw4Ax3gJS7rziCCbRM0e7vnicw
+                                cycY/Bx/G/JOIjPGCBVoBzKPEqV/LNDyYOQHGH+nVBWXgO6MvZOjKqZAwUgWXS5xMUtYzr
+                                On8APZWtgrQ4hFpWmS43EbagtSisjnA9kwwTX7ZMi4s430acheXdHSwuHcGmMvUuy4MJSZ
+                                /eM5Qd84eOTfnGARhpABZAXxl6i0HNJ20FlZyRlRwq1aaOVQbiqWWbvNZGc+pLqH4czEd1
+                                R1tD2eINq/MY6cCZtTVn1BGbuVzy3tiK0EHMZ2jWUSdlNzkS48RevUOghLd20ZS6hBAAAA
+                                wQCu14m1SlClBpLm9XDLepTIqMnJ6jwoq9rzal2y5YLJvb5sTNcItbdPnLEzmH+sypFB+l
+                                uY42fSXeJ8UhdW0XNx3OKSq4N+yiLs9dsd8GluheP2wQRqYnEGZRN6Jqx83ctKLyZDnKFa
+                                Ytp5i+elpT+u1uIjj08FliQla5ymXSLy8J4l+bVygq2knxAPa2EkG3kj9tEHHd72IyUc52
+                                h2A5nJYS3aZ1utYAGG6SZbslVDqfUPxj3/UnEwOhQiE6pGDKUAAADBAOiDAI6T7Un3NcnZ
+                                6BIhvCi2lArXHLedcARPEyCUWrA6A16vlI42U0M12kd/5cE4mZsOSkYXCf9LhqnGwml+wx
+                                jPoO82D2hPbH1gcWz4/fHZOLrILQM/2bRXRBssquEqoRKhwcHCkbaUHj16VuyiBhDFGLR7
+                                JcRijkSNljjn9XFuNHLtNyVaPRp/v+4yu/w/M6CJixg3xcheAx5c864EJv0vL2Z4tDfm2D
+                                FK7mcXAWNHdMF4EOIslj6UkyhUJdW4YwAAAMEAxhEn06NGlemIvX7eLVPhz3oPRa7CLmC3
+                                wQJ1iCtumA+Q9+rRRmXZLiyQuDYXsoN0FDZedUYoM+jiC7foLAt5dk6EMqpKTw1qv8qC60
+                                41fU5NgunPABqBYEXtVfvJlgrYC1hRhpMj527yAIPnoEVfglNnCzKl8HBf/fRSVryGS2wf
+                                gIqSGv9eAq3zihc2y25v/EU6P/Zsfn0Jv55yKTJQU7zuaIFUvQgJde4+59KuwmbDzTyc6i
+                                7jjBzDdTMBVpkLAAAALXB1Ymxpc2gtSmVua2lucy10by1hcHBzU2VydmVyX3Bvc3RCdWls
+                                ZEFjdGlvbgECAwQF
+                                -----END OPENSSH PRIVATE KEY-----
+                            </key>
+                            <keyPath></keyPath>
+                            <username>asoldatov</username>
+                        </credentials>
+                    </jenkins.plugins.publish__over__ssh.BapSshPublisher>
+                </publishers>
+                <continueOnError>false</continueOnError>
+                <failOnError>false</failOnError>
+                <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+                <hostConfigurationAccess class="jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin"
+                                         reference="../.."/>
+            </delegate>
+        </jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin>
+    </publishers>
+    <buildWrappers/>
+</project>
